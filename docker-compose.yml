@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  bitbucket:
+    image: atlassian/bitbucket:7.6.17
+    container_name: bitbucket
+    ports:
+      - "7990:7990"
+      - "7999:7999"
+    volumes:
+      - ./data:/var/atlassian/application-data/bitbucket
+    environment:
+      - JVM_MINIMUM_MEMORY=1g
+      - JVM_MAXIMUM_MEMORY=2g
+    restart: unless-stopped
