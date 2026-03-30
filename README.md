@@ -55,5 +55,5 @@ Here test and canary appear as separate arguments, both forwards to git which de
 * CVE-2022-36804
 
 ## Author
-Johan 
+Johan -
 Stockholm, Sweden
