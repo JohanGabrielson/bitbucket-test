@@ -50,3 +50,10 @@ In pspy Bitbucket generates:
 Here test and canary appear as separate arguments, both forwards to git which demonstrates that the null byte (%00) successfully terminated the original parameter causing Bitbucket to pass multiple independent arguments to the underlying git archive process.
 
 
+## References 
+* Assetnote: Bitbucket pre-auth rce via git argument injection
+* CVE-2022-36804
+
+## Author
+Johan 
+Stockholm, Sweden
