@@ -1,4 +1,5 @@
 # Docker container to investigate CVE-2022-36804
+- recreating remote code execution vulnerability
 
 This repository documents how I reproduced the vulnerability behind CVE-2022-36804, a pre-authentication argument injection flaw in Bitbucket Server and Data Center. The goal of this lab was to demonstrate the underlying security issue as described in public research (Assetnote's write-up). All testing was performed in an isolated environment. 
 
