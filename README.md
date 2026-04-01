@@ -4,7 +4,7 @@
 This repository documents how I reproduced the vulnerability behind CVE-2022-36804, a pre-authentication argument injection flaw in Bitbucket Server and Data Center. The goal of this lab was to demonstrate the underlying security issue as described in public research (Assetnote's write-up). All testing was performed in an isolated environment. 
 
 ## Overview
-CVE-2022-36804 is caused by Bitbucket passing user controlled input directly into git archive subprocess without sanitizing null bytes ('%00').
+CVE-2022-36804 is caused by Bitbucket passing user controlled input directly into git archive subprocess without sanitizing null bytes.
 Because Bitbucket user NuProcess to spawn git, null bytes are preserved and cause argument splitting. This allows an attacker to inject additional git flags into the command line. In vulnerable versions (such as 7.21.0 as used in this set up) this leads to pre-auth remote code execution.
 
 ## lab setup
