@@ -49,9 +49,9 @@ In pspy Bitbucket generates:
 ~~~
 /usr/bin/git archive --format=zip --prefix=test canary/ -- 
 ~~~
-Here test and canary appear as separate arguments, both forwards to git which demonstrates that the null byte (~~~ %00 ~~~) successfully terminated the original parameter causing Bitbucket to pass multiple independent arguments to the underlying git archive process.
+Here test and canary appear as separate arguments, both forwards to git which demonstrates that the null byte (`%00 `) successfully terminated the original parameter causing Bitbucket to pass multiple independent arguments to the underlying git archive process.
 
-The image below shows this: pspy running inside the Bitbucket Docker container calling ~~~ /usr/bin/git archive --format=zip --prefix=test canary/ --~~~ (PID=666). What was sent as one value - ~~~ test%00canary ~~~ - is passed as two separate arguments. The null byte split the input which sneaks an extra argument into the git command.
+The image below shows this: pspy running inside the Bitbucket Docker container calling ` /usr/bin/git archive --format=zip --prefix=test canary/ -- ` (PID=666). What was sent as one value - ` test%00canary ` - is passed as two separate arguments. The null byte split the input which sneaks an extra argument into the git command.
 
 <img width="1870" height="792" alt="Skärmbild 2026-03-30 191936" src="https://github.com/user-attachments/assets/860fa4b1-5b73-47f8-9afc-14f6f201b882" />
 
