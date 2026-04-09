@@ -1,17 +1,16 @@
 # Docker container to investigate CVE-2022-36804
 *Recreating remote code execution vulnerability where Bitbucket fails to sanitize user input, which allows attackers to inject Git flags and execute code remotely.*
 
-This repository documents how I reproduced the vulnerability CVE-2022-36804, an issue with pre-authentication argument injection in Bitbucket Server and Data Center. The goal of this lab was to demonstrate the underlying security issue as described in public research (Assetnote's write-up). All testing was performed in an isolated environment. 
+This repository documents how I reproduced the vulnerability CVE-2022-36804, an issue with pre-authentication argument injection in Bitbucket. The goal of this lab was to demonstrate the underlying security issue as described in Assetnote's write-up. All testing was performed in an isolated environment. 
 
 ## Overview
-CVE-2022-36804 is caused by Bitbucket passing user controlled input directly into git archive subprocess without sanitizing null bytes.
-Because Bitbucket user NuProcess to spawn git, null bytes are preserved and cause argument splitting. This allows an attacker to inject additional git flags into the command line. In vulnerable versions (such as 7.21.0 as used in this set up) this leads to pre-auth remote code execution.
+CVE-2022-36804 is caused by Bitbucket passing user input directly into a git archive subprocess without sanitizing null bytes. Because Bitbucket uses NuProcess to spawn git, null bytes are preserved and cause argument splitting. This allows an attacker to inject extra git flags into the command. In vulnerable versions (such as 7.21.0 as used in this set up) this leads to remote code execution without any authentication.
 
-## lab setup
+## Lab setup
 - Bitbucket version 7.21.0
 - Deployment: Docker Compose 
-Repository: public test redo ('TEST/demo')
-Host: local isolated lab environment
+- Repository: public test redo ('TEST/demo')
+- Host: local isolated lab environment
 
 To start the environment:
 ~~~
