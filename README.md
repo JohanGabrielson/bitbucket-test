@@ -4,7 +4,7 @@
 This repository documents how I reproduced the vulnerability CVE-2022-36804, an issue with pre-authentication argument injection in Bitbucket. The goal of this lab was to demonstrate the underlying security issue as described in Assetnote's write-up. All testing was performed in an isolated environment. 
 
 ## Overview
-CVE-2022-36804 is caused by Bitbucket passing user input directly into a git archive subprocess without sanitizing null bytes. Because Bitbucket uses NuProcess to spawn git, null bytes are preserved and cause argument splitting. This allows an attacker to inject extra git flags into the command. In vulnerable versions (such as 7.21.0 as used in this set up) this leads to remote code execution without any authentication.
+CVE-2022-36804 is caused by Bitbucket passing user input directly into a git archive subprocess without sanitizing null bytes. Because Bitbucket uses NuProcess to spawn git, null bytes are preserved and cause argument splitting. This allows an attacker to inject extra git flags into the command. In vulnerable versions (such as 7.21.0 as used in this setup) this leads to remote code execution without any authentication.
 
 ## Lab setup
 - Bitbucket version 7.21.0
@@ -29,7 +29,7 @@ The image below shows how pspy running inside the Bitbucket Docker container cal
 <img width="1870" height="792" alt="Skärmbild 2026-03-30 191936" src="https://github.com/user-attachments/assets/860fa4b1-5b73-47f8-9afc-14f6f201b882" />
 
 ### Detailed steps
-The key to this CVE is showing that a null byte in the prefix parameter causes Bitbucket to pass multiple arguments to git archive. 
+The key to this CVE is showing that a null byte in the `prefix` parameter causes Bitbucket to pass multiple arguments to `git archive`. 
 
 1. Run pspy inside the Bitbucket container
 
@@ -42,20 +42,18 @@ chmod +x pspy64
 ~~~
 Leave pspy running. 
 
-2. Trigger the vulnerable endpoint
-from host: 
+2. Trigger the vulnerable endpoint from host: 
 ~~~
 curl "http://localhost:7990/rest/api/latest/projects/TEST/repos/demo/archive?prefix=test%00canary&format=zip"
 ~~~
-This payload tests argument splitting.
+This tests if the null byte causes argument splitting.
 
 3. Observe the injected arguments
 In pspy Bitbucket generates:
 ~~~
 /usr/bin/git archive --format=zip --prefix=test canary/ -- 
 ~~~
-Here test and canary appear as separate arguments, both forwards to git which demonstrates that the null byte (`%00 `) successfully terminated the original parameter causing Bitbucket to pass multiple independent arguments to the underlying git archive process.
-
+Here `test` and `canary` show up as separate arguments instead of one. The `%00` split the input and Bitbucket is forced to pass them as independent arguments to git. 
 
 ## References 
 * Assetnote: Bitbucket pre-auth rce via git argument injection
