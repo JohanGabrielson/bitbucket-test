@@ -53,7 +53,7 @@ Here test and canary appear as separate arguments, both forwards to git which de
 
 
 <img width="1870" height="792" alt="Skärmbild 2026-03-30 191936" src="https://github.com/user-attachments/assets/860fa4b1-5b73-47f8-9afc-14f6f201b882" />
-*pspy running inside the Bitbucket Docker container calling ~~~ /usr/bin/git archive --format=zip --prefix=test canary/ --~~~ (PID=666). What was sent as one value - ~~~ test%00canary ~~~ - is passed as two separate arguments. The null byte split the input which sneaks an extra argument into the git command.
+*pspy running inside the Bitbucket Docker container calling ~~~ /usr/bin/git archive --format=zip --prefix=test canary/ --~~~ (PID=666). What was sent as one value - ~~~ test%00canary ~~~ - is passed as two separate arguments. The null byte split the input which sneaks an extra argument into the git command.*
 
 
 
