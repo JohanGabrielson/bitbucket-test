@@ -59,6 +59,7 @@ Here test and canary appear as separate arguments, both forwards to git which de
 
 ## References 
 * Assetnote: Bitbucket pre-auth rce via git argument injection
+  - https://www.assetnote.io/resources/research/breaking-bitbucket-pre-auth-remote-command-execution-cve-2022-36804
 * CVE-2022-36804
 
 ## Author
