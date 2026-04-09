@@ -1,5 +1,5 @@
 # Docker container to investigate CVE-2022-36804
-recreating remote code execution vulnerability where Bitbucket fails to sanitize user input, which allows attackers to inject Git flags and execute code remotely.
+*Recreating remote code execution vulnerability where Bitbucket fails to sanitize user input, which allows attackers to inject Git flags and execute code remotely.*
 
 This repository documents how I reproduced the vulnerability CVE-2022-36804, an issue with pre-authentication argument injection in Bitbucket Server and Data Center. The goal of this lab was to demonstrate the underlying security issue as described in public research (Assetnote's write-up). All testing was performed in an isolated environment. 
 
