@@ -9,7 +9,7 @@ CVE-2022-36804 is caused by Bitbucket passing user input directly into a git arc
 ## Lab setup
 - Bitbucket version 7.21.0
 - Deployment: Docker Compose 
-- Repository: public test repo ('TEST/demo')
+- Repository: public test repo (`TEST/demo`)
 - Host: local isolated lab environment
 
 To start the environment:
@@ -51,7 +51,7 @@ In pspy Bitbucket generates:
 ~~~
 Here `test` and `canary` show up as separate arguments instead of one. The `%00` split the input and Bitbucket is forced to pass them as independent arguments to git. 
 
-The image below shows how pspy running inside the Bitbucket Docker container catching ` /usr/bin/git archive --format=zip --prefix=test canary/ -- ` (PID=666). What was sent as one value - ` test%00canary ` - is passed as two separate arguments. The null byte split the input which sneaks an extra argument into the git command.
+The image below shows pspy running inside the Bitbucket Docker container catching ` /usr/bin/git archive --format=zip --prefix=test canary/ -- ` (PID=666). What was sent as one value - ` test%00canary ` - is passed as two separate arguments. The null byte split the input which sneaks an extra argument into the git command.
 
 <img width="1870" height="792" alt="Skärmbild 2026-03-30 191936" src="https://github.com/user-attachments/assets/860fa4b1-5b73-47f8-9afc-14f6f201b882" />
 
