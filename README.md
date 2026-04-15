@@ -44,7 +44,8 @@ curl "http://localhost:7990/rest/api/latest/projects/TEST/repos/demo/archive?pre
 ~~~
 This tests if the null byte causes argument splitting.
 
-3. Observe the injected arguments
+3. Observe injected arguments
+
 In pspy Bitbucket generates:
 ~~~
 /usr/bin/git archive --format=zip --prefix=test canary/ -- 
