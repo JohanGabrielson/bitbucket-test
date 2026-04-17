@@ -6,6 +6,11 @@ This repository documents how I reproduced the vulnerability CVE-2022-36804, an 
 ## Overview
 CVE-2022-36804 is caused by Bitbucket passing user input directly into a git archive subprocess without sanitizing null bytes. Because Bitbucket uses NuProcess to spawn git, null bytes are preserved and cause argument splitting. This allows an attacker to inject extra git flags into the command. In vulnerable versions (such as 7.21.0 as used in this setup) this leads to remote code execution without authentication.
 
+## CVE-2022-36804 explained
+This pre-authentication remote code execution vulnerability occurs in the ``/archive`` endpoint which is responsible for generating repository archives with the function of ``git archive``. Bitbucket passes the ``prefix`` parameter directly into the git subprocess but without sanitizing null bytes. Since git is implemented in C, a null byte terminates the string early. Everything after the null byte is therefore interpreted as a separate command line argument. This allows the attacker to inject arbitrary git flags into the command. 
+
+This works because Bitbucket uses NuProcess which preserves null bytes instead of stripping them. As a result Git receives the raw input exactly as it is provided by the user. Since git treats null bytes as string terminators the ``prefix`` value is split into multiple arguments when passed to the git subprocess. This allows to smuggle additional git flags after the null byte. When combined with flags such as ``--exec`` and ``--remote`` this argument injection leads directly to remote code exection in vulnerable versions of the Bitbucket Server.
+
 ## Lab setup
 - Bitbucket version 7.21.0
 - Deployment: Docker Compose 
@@ -71,6 +76,7 @@ The image below shows pspy catching the full execution chain - `/usr/bin/git arc
 With `docker exec -it bitbucket ls -la /tmp/pwned` it was possible to verify the file was created.
 This is shown in the image below.
 <img width="782" height="102" alt="Skärmbild 2026-04-12 164846" src="https://github.com/user-attachments/assets/a69dc09a-b520-4ad4-b96d-46dbac8512c8" />
+
 
 
 
